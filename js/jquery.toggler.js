@@ -57,12 +57,11 @@
 
 
   Plugin.prototype = {
-    locked: false,
+    is_locked: false,
 
     hover_count: 0,
 
     init: function() {
-
       this.$el = $(this.el);
 
       if (this.settings.toggle_sel === false) {
@@ -152,7 +151,10 @@
 
 
     checkHoverCount: function() {
-      if (this.hover_count <= 0) this._hide();
+      if (this.hover_count <= 0) {
+        this.hover_count = 0;
+        this._hide();
+      }
     },
 
     hideOthers: function() {
@@ -161,7 +163,7 @@
         inst = instances[this.settings.group][i];
         if (inst.id != this.id) {
           // immediately force hide others (no delay)
-          inst.locked = false;
+          inst.is_locked = false;
           inst._hide();
         }
       }
@@ -169,14 +171,18 @@
 
     over: function(e) {
       if (this.settings.hide_others) this.hideOthers();
-      if (this.locked) return;
+      if (this.is_locked) return;
+
       this.hover_count ++;
+
       this._show();
     },
 
     out: function(e) {
-      if (this.locked) return;
+      if (this.is_locked) return;
+
       this.hover_count --;
+
       // check in X ms (allows mouse to go from one element to the other)
       setTimeout($.proxy(this.checkHoverCount, this), this.settings.delay);
     }
