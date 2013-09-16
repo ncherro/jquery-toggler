@@ -1,4 +1,5 @@
-jquery-toggler
-==============
+# jQuery Toggler
 
-jQuery toggler plugin
+provides flexible mouseover / clickable toggling
+
+documentation and examples coming soon...
